@@ -18,7 +18,6 @@
                 <th>Telepon</th>
                 <th>Registrasi</th>
                 <th>Status</th>
-                <th>Aksi</th>
             </tr>
             </thead>
             <tfoot>
@@ -28,28 +27,21 @@
                 <th>Telepon</th>
                 <th>Registrasi</th>
                 <th>Status</th>
-                <th>Aksi</th>
             </tr>
             </tfoot>
             <tbody>
                 @foreach ($members as $member)
                     <tr>
-                        <td>{{ $member->reg_number }}</td>
+                        <td><a href="{{ route('member.edit', $member->id) }}">{{ $member->reg_number }}</a></td>
                         <td>{{ $member->name }}</td>
                         <td>{{ $member->phone }}</td>
                         <td>{{ $member->created_at->format('d-m-Y') }}</td>
                         <td>
                             @if ($member->status === 1)
-                                <label class="label label-info">aktif</label>
+                                <button type="button" class="btn btn-xs btn-info waves-effect">aktif</button>
                             @else
-                                <label class="label label-danger">tidak aktif</label>
+                                <button type="button" class="btn btn-xs btn-danger waves-effect">tidak aktif</button>
                             @endif
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <a href="{{ route('member.edit', $member->id) }}" class="btn btn-xs btn-primary waves-effect" name="button"><i class="zmdi zmdi-edit"></i></a>
-                                <button type="button" class="btn btn-xs btn-danger waves-effect" name="button"><i class="zmdi zmdi-delete"></i></button>
-                            </div>
                         </td>
                     </tr>
                 @endforeach
@@ -64,6 +56,12 @@
 <script>
     $(document).ready(function() {
         $('#data-table-basic').DataTable();
+    });
+
+    $(document).on('click', '.btn-delete', function(e) {
+        e.preventDefault();
+        actionUrl = $(this).attr('href');
+        alert(actionUrl);
     });
 </script>
 @endsection

@@ -84,6 +84,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary waves-effect">Submit</button>
+                    <a href="{{ route('member.index') }}" class="btn btn-default waves-effect">Batal</a>
                 </div>
             </div>
         </div>

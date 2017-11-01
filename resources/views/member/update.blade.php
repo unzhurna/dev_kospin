@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('vendors/dropify/css/dropify.min.css') }}">
 @endsection
 
-@section('title', 'Tambah Anggota')
+@section('title', 'Edit Anggota')
 
 @section('content')
 <form action="{{ route('member.update', $member->id) }}" method="POST" enctype="multipart/form-data">
@@ -54,7 +54,8 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary waves-effect">Submit</button>
+                    <button type="submit" class="btn btn-primary waves-effect">Simpan</button>
+                    <a href="{{ route('member.index') }}" class="btn btn-default waves-effect">Batal</a>
                 </div>
             </div>
         </div>
@@ -65,7 +66,10 @@
 @section('script')
     <script src="{{ asset('vendors/chosen/chosen.jquery.js') }}"></script>
     <script src="{{ asset('vendors/dropify/js/dropify.min.js') }}"></script>
+    <script src="{{ asset('vendors/form-validator/jquery.form-validator.min.js') }}"></script>
     <script>
+        $.validate();
+
         $(document).ready(function() {
             $('.dropify').dropify();
         });

@@ -14,7 +14,7 @@ class LoanController extends Controller
 
     public function index()
     {
-
+        return view('loan.index');
     }
 
     /**

@@ -45,13 +45,6 @@ class MemberController extends Controller
         $member->email = $request->email;
         $member->address = $request->address;
 
-        $member = new Member;
-        $member->reg_number = $request->reg_number;
-        $member->name = $request->name;
-        $member->phone = $request->phone;
-        $member->email = $request->email;
-        $member->address = $request->address;
-
         if($request->hasFile('image'))
         {
             $path = public_path('media/user/');
@@ -97,26 +90,46 @@ class MemberController extends Controller
         return view('member.update', ['member'=>$member]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name'      => 'required',
+            'phone'     => 'numeric',
+            'email'     => 'email',
+            'address'   => 'required',
+        ]);
+
+        $member = Member::find($id);
+        $member->reg_number = $request->reg_number;
+        $member->name = $request->name;
+        $member->phone = $request->phone;
+        $member->email = $request->email;
+        $member->address = $request->address;
+
+        if($request->hasFile('image'))
+        {
+            $path = public_path('media/user/');
+
+            if(!file_exists($path))
+            {
+                mkdir($path, 0777, true);
+            }
+
+            $image = $request->file('image');
+            $filename = time() .'.'. $image->getClientOriginalExtension();
+            $location = $path . $filename;
+            Image::make($image)->resize(300, 300)->save($location);
+            $member->avatar = $filename;
+        }
+
+        $member->save();
+
+        return redirect()->route('member.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $member = Member::find($id);
+        $member->delete();
     }
 }

@@ -1,26 +1,12 @@
 <?php
 
-// if(!function_exists('no_member'))
+// if(!function_exists('GenRegNumber'))
 // {
-//     function no_member($param)
+//     function GenRegNumber()
 //     {
 //         $numlen = 5;
 //         $prefix = 'ABC';
 //         $cumi =
-//
-//         // if()
-//         // {
-//         //
-//         // }
-//
-//         for($i = 1; $i < $numlen; $i++)
-//         {
-//             return $i;
-//         }
-//
-//
-//         // return $prefix.$num.$param;
-//
 //
 //         // switch ($numlen) {
 //         //     case $numlen == '1':
