@@ -12,4 +12,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-placeholder/2.3.1/jquery.placeholder.min.js"></script>
 <![endif]-->
 
-<script src="js/app.min.js"></script>
+<script src="{{ asset('js/app.min.js') }}"></script>

@@ -16,7 +16,7 @@
                 <th>No Anggota</th>
                 <th>Nama</th>
                 <th>Telepon</th>
-                <th>Tanggal</th>
+                <th>Registrasi</th>
                 <th>Status</th>
                 <th>Aksi</th>
             </tr>
@@ -26,7 +26,7 @@
                 <th>No Anggota</th>
                 <th>Nama</th>
                 <th>Telepon</th>
-                <th>Tanggal</th>
+                <th>Registrasi</th>
                 <th>Status</th>
                 <th>Aksi</th>
             </tr>
@@ -34,15 +34,20 @@
             <tbody>
                 @foreach ($members as $member)
                     <tr>
-                        <td>{{ $member->no_anggota }}</td>
-                        <td>{{ $member->nama }}</td>
-                        <td>{{ $member->email }}</td>
-                        <td>{{ $member->telepon }}</td>
-                        <td>{{ $member->alamat }}</td>
-                        <td><label class="label label-info">aktif</label></td>
+                        <td>{{ $member->reg_number }}</td>
+                        <td>{{ $member->name }}</td>
+                        <td>{{ $member->phone }}</td>
+                        <td>{{ $member->created_at->format('d-m-Y') }}</td>
+                        <td>
+                            @if ($member->status === 1)
+                                <label class="label label-info">aktif</label>
+                            @else
+                                <label class="label label-danger">tidak aktif</label>
+                            @endif
+                        </td>
                         <td>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-xs btn-primary waves-effect" name="button"><i class="zmdi zmdi-edit"></i></button>
+                                <a href="{{ route('member.edit', $member->id) }}" class="btn btn-xs btn-primary waves-effect" name="button"><i class="zmdi zmdi-edit"></i></a>
                                 <button type="button" class="btn btn-xs btn-danger waves-effect" name="button"><i class="zmdi zmdi-delete"></i></button>
                             </div>
                         </td>

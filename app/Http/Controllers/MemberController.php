@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Image;
 use App\Member;
+use App\Province;
+use App\Regency;
 
 class MemberController extends Controller
 {
@@ -21,20 +24,50 @@ class MemberController extends Controller
 
     public function create()
     {
-        return view('member.create');
+        $provinces = Province::all();
+        $regencies = Regency::all();
+        return view('member.create', ['provinces'=>$provinces, 'regencies'=>$regencies]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'name' => 'required',
-            'name' => 'required',
+            'name'      => 'required',
+            'phone'     => 'numeric',
+            'email'     => 'email',
+            'address'   => 'required',
         ]);
 
         $member = new Member;
+        $member->reg_number = $request->reg_number;
         $member->name = $request->name;
+        $member->phone = $request->phone;
+        $member->email = $request->email;
+        $member->address = $request->address;
+
+        $member = new Member;
+        $member->reg_number = $request->reg_number;
         $member->name = $request->name;
+        $member->phone = $request->phone;
+        $member->email = $request->email;
+        $member->address = $request->address;
+
+        if($request->hasFile('image'))
+        {
+            $path = public_path('media/user/');
+
+            if(!file_exists($path))
+            {
+                mkdir($path, 0777, true);
+            }
+
+            $image = $request->file('image');
+            $filename = time() .'.'. $image->getClientOriginalExtension();
+            $location = $path . $filename;
+            Image::make($image)->resize(300, 300)->save($location);
+            $member->avatar = $filename;
+        }
+
         $member->save();
 
         return redirect()->route('member.index');
@@ -60,7 +93,8 @@ class MemberController extends Controller
      */
     public function edit($id)
     {
-        //
+        $member = Member::find($id);
+        return view('member.update', ['member'=>$member]);
     }
 
     /**
