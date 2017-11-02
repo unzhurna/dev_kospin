@@ -23,3 +23,5 @@ Route::get('/profile', 'HomeController@UserProfile')->name('profile');
 Route::resource('member', 'MemberController');
 Route::resource('saving', 'SavingController');
 Route::resource('loan', 'LoanController');
+
+Route::put('/member/{member}', 'MemberController@ChangeStatus')->name('change.status');

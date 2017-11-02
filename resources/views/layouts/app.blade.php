@@ -5,6 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Material Admin</title>
 
         <!-- CSS -->
@@ -394,7 +395,7 @@
             <section id="content">
                 <div class="container">
                     <div class="block-header">
-                        <h2>@yield('title')</h2>                        
+                        <h2>@yield('title')</h2>
                     </div>
 
                     <!-- Main Content -->

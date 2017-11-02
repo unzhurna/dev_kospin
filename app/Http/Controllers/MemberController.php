@@ -66,24 +66,6 @@ class MemberController extends Controller
         return redirect()->route('member.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        // $user = User::find($id);
-        // return view('member.profile', ['user'=>$user]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $member = Member::find($id);
@@ -127,9 +109,11 @@ class MemberController extends Controller
         return redirect()->route('member.index');
     }
 
-    public function destroy($id)
+    public function ChangeStatus(Request $request, $id)
     {
         $member = Member::find($id);
-        $member->delete();
+        $member->status = $request->status;
+        $member->save();
+        return response()->json($member);
     }
 }

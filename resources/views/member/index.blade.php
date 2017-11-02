@@ -37,10 +37,10 @@
                         <td>{{ $member->phone }}</td>
                         <td>{{ $member->created_at->format('d-m-Y') }}</td>
                         <td>
-                            @if ($member->status === 1)
-                                <button type="button" class="btn btn-xs btn-info waves-effect">aktif</button>
+                            @if ($member->status !== 1)
+                                <a href="{{ route('change.status', $member->id) }}" class="btn btn-xs btn-danger waves-effect activate">Non-Aktif</a>
                             @else
-                                <button type="button" class="btn btn-xs btn-danger waves-effect">tidak aktif</button>
+                                <a href="{{ route('change.status', $member->id) }}" class="btn btn-xs btn-info waves-effect deactivate">Aktif</a>
                             @endif
                         </td>
                     </tr>
@@ -58,10 +58,77 @@
         $('#data-table-basic').DataTable();
     });
 
-    $(document).on('click', '.btn-delete', function(e) {
+    $(document).on('click', '.activate', function(e) {
+
         e.preventDefault();
+
         actionUrl = $(this).attr('href');
-        alert(actionUrl);
+        tableColumn = $(this).parent();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        swal({
+            title : "Apa anda yakin?",
+            type : "warning",
+            text : "Member aktif dapat kembali melakukan simpanan dan pinjaman!",
+            showCancelButton : true,
+            cancelButtonText : "Batal",
+            confirmButtonText : 'Aktifkan',
+        }).then(function() {
+            $.ajax({
+                url         : actionUrl,
+                method      : 'POST',
+                data        : {'_method' : 'put', 'status' : 1},
+                dataType    : 'json',
+                success     : function(data) {
+                    console.log('member status set to be : '+data.status);
+                    swal("Berhasil!", "Anggota tersebut telah di diaktifkan.", "success");
+                    tableColumn.html('<a href="'+actionUrl+'" class="btn btn-xs btn-info waves-effect deactivate">Aktif</a>');
+                }
+            });
+        })
+
     });
+
+    $(document).on('click', '.deactivate', function(e) {
+
+        e.preventDefault();
+
+        actionUrl = $(this).attr('href');
+        tableColumn = $(this).parent();
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        swal({
+            title : "Apa anda yakin?",
+            type : "warning",
+            text : "Member non-aktif tidak dapat melakukan simpanan dan pinjaman!",
+            showCancelButton : true,
+            cancelButtonText : "Batal",
+            confirmButtonText : "Non-Aktifkan",
+        }).then(function() {
+            $.ajax({
+                url         : actionUrl,
+                method      : 'POST',
+                data        : {'_method' : 'put', 'status' : 0},
+                dataType    : 'json',
+                success     : function(data) {
+                    console.log('member status set to be : '+data.status);
+                    swal("Berhasil!", "Anggota tersebut telah di dinon-aktifkan.", "success");
+                    tableColumn.html('<a href="'+actionUrl+'" class="btn btn-xs btn-danger waves-effect activate">Non-Aktif</a>');
+                }
+            });
+        })
+
+    });
+
 </script>
 @endsection
