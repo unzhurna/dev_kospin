@@ -1,38 +1,69 @@
 <?php
 
-// if(!function_exists('GenRegNumber'))
-// {
-//     function GenRegNumber()
-//     {
-//         $numlen = 5;
-//         $prefix = 'ABC';
-//         $cumi =
-//
-//         // switch ($numlen) {
-//         //     case $numlen == '1':
-//         //         $num = '0000';
-//         //         $numreg = $prefix.$num.$param;
-//         //         break;
-//         //
-//         //     case $numlen == '2':
-//         //         $num = '000';
-//         //         $numreg = $prefix.$num.$param;
-//         //         break;
-//         //
-//         //     case $numlen == '3':
-//         //         $num = '00';
-//         //         $numreg = $prefix.$num.$param;
-//         //         break;
-//         //
-//         //     case $numlen == '4':
-//         //         $num = '0';
-//         //         $numreg = $prefix.$num.$param;
-//         //         break;
-//         //
-//         //     default:
-//         //         $numreg = $prefix.$num.$param;
-//         //         break;
-//         // }
-//         //return $numreg;
-//     }
-// }
+if(!function_exists('genRegNumber'))
+{
+    function genRegNumber()
+    {
+        $members = App\Member::count();
+        $lastnum = $members + 1;
+        $prefix = 'AGT';
+        $digits = strlen($lastnum);
+
+        switch ($digits) {
+            case $digits == '1':
+                $numreg = $prefix.'0000'.$lastnum;
+                break;
+
+            case $digits == '2':
+                $numreg = $prefix.'000'.$lastnum;
+                break;
+
+            case $digits == '3':
+                $numreg = $prefix.'00'.$lastnum;
+                break;
+
+            case $digits == '4':
+                $numreg = $prefix.'0'.$lastnum;
+                break;
+
+            default:
+                $numreg = $prefix.$lastnum;
+                break;
+        }
+        return $numreg;
+    }
+}
+
+if(!function_exists('genSaveNumber'))
+{
+    function genSaveNumber()
+    {
+        $savings = App\Saving::count();
+        $lastnum = $savings + 1;
+        $prefix = 'SIM';
+        $digits = strlen($lastnum);
+
+        switch ($digits) {
+            case $digits == '1':
+                $numsav = $prefix.'0000'.$lastnum;
+                break;
+
+            case $digits == '2':
+                $numsav = $prefix.'000'.$lastnum;
+                break;
+
+            case $digits == '3':
+                $numsav = $prefix.'00'.$lastnum;
+                break;
+
+            case $digits == '4':
+                $numsav = $prefix.'0'.$lastnum;
+                break;
+
+            default:
+                $numsav = $prefix.$lastnum;
+                break;
+        }
+        return $numsav;
+    }
+}

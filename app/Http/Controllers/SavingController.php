@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Member;
+use App\Saving;
+use App\Deposit;
 
 class SavingController extends Controller
 {
@@ -12,46 +15,31 @@ class SavingController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view('saving.index');
+        $savings = Saving::all();
+        return view('saving.list', ['savings'=>$savings]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $members = Member::where('status', 1)->get();
+        return view('saving.add', ['members'=>$members]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $data = new Saving;
+        $data->no_simpanan = $request->no_simpanan;
+        $data->id_anggota = $request->id_anggota;
+        $data->save();
+        return redirect()->route('saving.show', $data->id);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        $saving = Saving::find($id);
+        return view('saving.deposit.list', ['saving'=>$saving]);
     }
 
     /**
@@ -62,7 +50,7 @@ class SavingController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**

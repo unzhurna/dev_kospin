@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Member extends Model
 {
-    //
+    protected $table = 'anggota';
+
+    public function savings()
+    {
+        return $this->hasMany('App\Saving');
+    }
 }

@@ -7,11 +7,24 @@
 @section('title', 'Data Pinjaman')
 
 @section('content')
-<a href="{{ route('member.create') }}" class="btn btn-float btn-danger m-btn"><i class="zmdi zmdi-accounts-add"></i></a>
+<a href="{{ route('loan.create') }}" class="btn btn-float btn-danger m-btn"><i class="zmdi zmdi-plus"></i></a>
 <div class="card">
     <div class="table-responsive">
-        <h1>Ini belum selesai</h1>
+        <table id="data-table" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>No. Pinjaman</th>
+                    <th>Nama Anggota</th>
+                    <th>Tgl. Pinjam</th>
+                    <th>Total Pinjaman</th>
+                    <th>Tenor</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
 
+            </tbody>
+        </table>
     </div>
 </div>
 @endsection
@@ -20,7 +33,7 @@
 <script src="{{ asset('vendors/datatables/js/jquery.dataTables.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        $('#data-table-basic').DataTable();
+        $('#data-table').DataTable();
     });
 </script>
 @endsection

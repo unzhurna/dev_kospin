@@ -1,2 +1,2 @@
-# dev_yuli
-Appliksi Skripsi Yuli
+# dev_kospin
+Applikasi Koperasi Simpan Pinjam Sederhana

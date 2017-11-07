@@ -20,8 +20,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'HomeController@UserProfile')->name('profile');
 
-Route::resource('member', 'MemberController');
+Route::resource('member', 'MemberController', ['except'=>['show']]);
 Route::resource('saving', 'SavingController');
+Route::resource('deposit', 'DepositController');
 Route::resource('loan', 'LoanController');
 
-Route::put('/member/{member}', 'MemberController@ChangeStatus')->name('change.status');
+Route::put('status/{member}', 'MemberController@ChangeStatus')->name('change.status');

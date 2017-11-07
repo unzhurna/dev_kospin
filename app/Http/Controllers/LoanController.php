@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Member;
 
 class LoanController extends Controller
 {
@@ -17,14 +18,10 @@ class LoanController extends Controller
         return view('loan.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $members = Member::all();
+        return view('loan.create', ['members'=>$members]);
     }
 
     /**

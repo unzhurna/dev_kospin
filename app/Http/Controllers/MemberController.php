@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Image;
 use App\Member;
-use App\Province;
-use App\Regency;
 
 class MemberController extends Controller
 {
@@ -19,31 +17,31 @@ class MemberController extends Controller
     public function index()
     {
         $members = Member::all();
-        return view('member.index', ['members'=>$members]);
+        return view('member.list', ['members'=>$members]);
     }
 
     public function create()
     {
-        $provinces = Province::all();
-        $regencies = Regency::all();
-        return view('member.create', ['provinces'=>$provinces, 'regencies'=>$regencies]);
+        return view('member.add');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name'      => 'required',
-            'phone'     => 'numeric',
+            'nama'      => 'required',
+            'telepon'   => 'numeric',
             'email'     => 'email',
-            'address'   => 'required',
+            'alamat'    => 'required',
         ]);
 
         $member = new Member;
-        $member->reg_number = $request->reg_number;
-        $member->name = $request->name;
-        $member->phone = $request->phone;
+        $member->no_anggota = $request->no_anggota;
+        $member->nama = $request->nama;
+        $member->telepon = $request->telepon;
         $member->email = $request->email;
-        $member->address = $request->address;
+        $member->kota = $request->kota;
+        $member->alamat = $request->alamat;
+        $member->pekerjaan = $request->pekerjaan;
 
         if($request->hasFile('image'))
         {
@@ -55,9 +53,10 @@ class MemberController extends Controller
             }
 
             $image = $request->file('image');
-            $filename = time() .'.'. $image->getClientOriginalExtension();
+            $filename = time().'.'.$image->getClientOriginalExtension();
             $location = $path . $filename;
             Image::make($image)->resize(300, 300)->save($location);
+
             $member->avatar = $filename;
         }
 
@@ -69,24 +68,26 @@ class MemberController extends Controller
     public function edit($id)
     {
         $member = Member::find($id);
-        return view('member.update', ['member'=>$member]);
+        return view('member.edit', ['member'=>$member]);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'      => 'required',
-            'phone'     => 'numeric',
+            'nama'      => 'required',
+            'telepon'   => 'numeric',
             'email'     => 'email',
-            'address'   => 'required',
+            'alamat'    => 'required',
         ]);
 
         $member = Member::find($id);
-        $member->reg_number = $request->reg_number;
-        $member->name = $request->name;
-        $member->phone = $request->phone;
+        $member->no_anggota = $request->no_anggota;
+        $member->nama = $request->nama;
+        $member->telepon = $request->telepon;
         $member->email = $request->email;
-        $member->address = $request->address;
+        $member->kota = $request->kota;
+        $member->alamat = $request->alamat;
+        $member->pekerjaan = $request->pekerjaan;
 
         if($request->hasFile('image'))
         {
@@ -98,9 +99,10 @@ class MemberController extends Controller
             }
 
             $image = $request->file('image');
-            $filename = time() .'.'. $image->getClientOriginalExtension();
+            $filename = time().'.'.$image->getClientOriginalExtension();
             $location = $path . $filename;
             Image::make($image)->resize(300, 300)->save($location);
+
             $member->avatar = $filename;
         }
 
