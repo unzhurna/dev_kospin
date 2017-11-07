@@ -67,3 +67,37 @@ if(!function_exists('genSaveNumber'))
         return $numsav;
     }
 }
+
+if(!function_exists('genLoanNumber'))
+{
+    function genLoanNumber()
+    {
+        $savings = App\Saving::count();
+        $lastnum = $savings + 1;
+        $prefix = 'PIM';
+        $digits = strlen($lastnum);
+
+        switch ($digits) {
+            case $digits == '1':
+                $numsav = $prefix.'0000'.$lastnum;
+                break;
+
+            case $digits == '2':
+                $numsav = $prefix.'000'.$lastnum;
+                break;
+
+            case $digits == '3':
+                $numsav = $prefix.'00'.$lastnum;
+                break;
+
+            case $digits == '4':
+                $numsav = $prefix.'0'.$lastnum;
+                break;
+
+            default:
+                $numsav = $prefix.$lastnum;
+                break;
+        }
+        return $numsav;
+    }
+}

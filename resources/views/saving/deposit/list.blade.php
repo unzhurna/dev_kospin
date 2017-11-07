@@ -39,6 +39,12 @@
                         <th>Sukarela</th>
                     </tr>
                 </thead>
+                <tfoot>
+                    <tr>
+                        <th colspan="3" style="text-align:right">Total:</th>
+                        <th colspan="2" style="text-align:right"></th>
+                    </tr>
+                </tfoot>
                 <tbody>
                     @foreach ($saving->deposit as $deposit)
                         <tr>
@@ -46,7 +52,7 @@
                             <td>{{ number_format($deposit->sim_pokok, 0, ',', '.') }}</td>
                             <td>{{ number_format($deposit->sim_wajib, 0, ',', '.') }}</td>
                             <td>{{ number_format($deposit->sim_sukarela, 0, ',', '.') }}</td>
-                            <td>{{ number_format($deposit->sim_pokok + $deposit->sim_wajib + $deposit->sim_sukarela, 0, ',', '.') }}</td>
+                            <td>{{ number_format($deposit->sim_total, 0, ',', '.') }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -100,8 +106,41 @@
         $.validate();
 
         $(document).ready(function() {
-            $('#data-table').DataTable();
-        });
+            $('#data-table').DataTable( {
+                "footerCallback": function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,.]/g, '')*1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+
+                    // Total over all pages
+                    total = api
+                        .column( 4 )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Total over this page
+                    pageTotal = api
+                        .column( 4, { page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0 );
+
+                    // Update footer
+                    $( api.column( 4 ).footer() ).html(
+                        pageTotal +' ( '+ total +' total)'
+                    );
+                }
+            } );
+        } );
 
         $(document).on('keyup', '.simpanan', function() {
             SimTotal = 0;

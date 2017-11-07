@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Member;
+use App\Saving;
 
 class LoanController extends Controller
 {
@@ -15,7 +16,8 @@ class LoanController extends Controller
 
     public function index()
     {
-        return view('loan.index');
+        $savings = Saving::all();
+        return view('loan.list', ['savings'=>$savings]);
     }
 
     public function create()
