@@ -18,11 +18,19 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/profile', 'HomeController@UserProfile')->name('profile');
 
-Route::resource('member', 'MemberController', ['except'=>['show']]);
-Route::resource('saving', 'SavingController');
-Route::resource('deposit', 'DepositController');
-Route::resource('loan', 'LoanController');
+Route::get('/settings', 'HomeController@SystemSeting')->name('settings');
 
+Route::resource('member', 'MemberController', ['except'=>['show', 'destroy']]);
+Route::get('profile/{id}', 'MemberController@profile')->name('profile');
 Route::put('status/{member}', 'MemberController@ChangeStatus')->name('change.status');
+
+Route::resource('saving', 'SavingController', ['only'=>['index', 'create', 'store', 'show']]);
+Route::post('deposit', 'SavingController@DepositStore')->name('deposit');
+
+Route::resource('loan', 'LoanController', ['only'=>['index', 'create', 'store', 'show']]);
+Route::post('pay-loan', 'LoanController@InstallmentStore')->name('pay.loan');
+
+Route::get('report-shu', 'ReportController@reportShu')->name('report.shu');
+Route::get('report-shu-member', 'ReportController@reportShuMember')->name('report.shu-member');
+Route::get('report/result', 'ReportController@showResult')->name('report.result');

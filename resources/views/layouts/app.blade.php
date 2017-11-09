@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>Material Admin</title>
+        <title>Koperasi Simpan Pinjam</title>
 
         <!-- CSS -->
         @include('partials.stylesheet')
@@ -23,7 +23,7 @@
                 </li>
 
                 <li class="hi-logo hidden-xs">
-                    <a href="index.html">Koperasi Simpan Pinjam</a>
+                    <a href="{{ route('home') }}">Koperasi Simpan Pinjam</a>
                 </li>
 
                 <li class="pull-right">
@@ -37,10 +37,7 @@
                                     <a data-ma-action="fullscreen" href=""><i class="zmdi zmdi-fullscreen"></i> Fullscreen</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('profile') }}"><i class="zmdi zmdi-account"></i> Profile</a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="zmdi zmdi-settings"></i> Settings</a>
+                                    <a href="{{ route('profile', Auth::user()->id) }}"><i class="zmdi zmdi-account"></i> Profile</a>
                                 </li>
                                 <li>
                                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -60,7 +57,7 @@
                 <div class="s-profile">
                     <a href="" data-ma-action="profile-menu-toggle">
                         <div class="sp-pic">
-                            <img src="{{ asset('img/demo/profile-pics/1.jpg') }}" alt="{{ Auth::user()->name }}">
+                            <img src="{{ asset('media/user/no-user-image.png') }}" alt="{{ Auth::user()->name }}">
                         </div>
 
                         <div class="sp-info">
@@ -71,10 +68,7 @@
 
                     <ul class="main-menu">
                         <li>
-                            <a href="{{ route('profile') }}"><i class="zmdi zmdi-account"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href=""><i class="zmdi zmdi-settings"></i> Settings</a>
+                            <a href="{{ route('profile', Auth::user()->id) }}"><i class="zmdi zmdi-account"></i> Profile</a>
                         </li>
                         <li>
                             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -95,7 +89,8 @@
                     <li class="sub-menu">
                         <a href="#" data-ma-action="submenu-toggle"><i class="zmdi zmdi-print"></i> Laporan</a>
                         <ul>
-                            <li><a href="">SHU</a></li>
+                            <li><a href="{{ route('report.shu') }}">SHU Total</a></li>
+                            <li><a href="{{ route('report.shu-member') }}">SHU Anggota</a></li>
                         </ul>
                     </li>
                 </ul>

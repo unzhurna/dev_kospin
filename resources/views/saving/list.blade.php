@@ -16,13 +16,12 @@
                 <th>Nama</th>
                 <th>Tgl. Pebukaan</th>
                 <th>Status</th>
-                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($savings as $saving)
                 <tr>
-                    <td><strong>{{ $saving->no_simpanan }}</strong></td>
+                    <td><a href="{{ route('saving.show', $saving->id) }}"><strong>{{ $saving->no_simpanan }}</strong></a></td>
                     <td>{{ $saving->member->nama }}</td>
                     <td>{{ $saving->created_at->format('d/m/Y') }}</td>
                     <td>
@@ -31,9 +30,6 @@
                         @else
                             <label class="label label-info">Aktif</label>
                         @endif
-                    </td>
-                    <td>
-                        <a href="{{ route('saving.show', $saving->id) }}" class="btn btn-link" title="Detail"><i class="zmdi zmdi-search"></i></a>
                     </td>
                 </tr>
             @endforeach

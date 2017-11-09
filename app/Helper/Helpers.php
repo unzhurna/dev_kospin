@@ -1,5 +1,14 @@
 <?php
 
+if(!function_exists('site_option'))
+{
+    function site_option($param)
+    {
+        $option = App\Option::where('opt_name', $param)->get('opt_value');
+        return $option;
+    }
+}
+
 if(!function_exists('genRegNumber'))
 {
     function genRegNumber()
@@ -72,8 +81,8 @@ if(!function_exists('genLoanNumber'))
 {
     function genLoanNumber()
     {
-        $savings = App\Saving::count();
-        $lastnum = $savings + 1;
+        $loans = App\Loan::count();
+        $lastnum = $loans + 1;
         $prefix = 'PIM';
         $digits = strlen($lastnum);
 
@@ -99,5 +108,15 @@ if(!function_exists('genLoanNumber'))
                 break;
         }
         return $numsav;
+    }
+}
+
+
+if(!function_exists('InstallmentSec'))
+{
+    function InstallmentSec($param)
+    {
+        $lastnum = App\Installment::where('id_pinjaman', $param)->count();
+        return ++$lastnum;
     }
 }

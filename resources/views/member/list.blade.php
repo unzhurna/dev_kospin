@@ -32,7 +32,7 @@
             <tbody>
                 @foreach ($members as $member)
                     <tr>
-                        <td><a href="{{ route('member.edit', $member->id) }}">{{ $member->no_anggota }}</a></td>
+                        <td><a href="{{ route('member.edit', $member->id) }}"><strong>{{ $member->no_anggota }}</strong></a></td>
                         <td>{{ $member->nama }}</td>
                         <td>{{ $member->telepon }}</td>
                         <td>{{ $member->created_at->format('d/m/Y') }}</td>

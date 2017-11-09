@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ asset('vendors/chosen/chosen.css') }}">
 @endsection
 
-@section('title', 'Tambah Simpanan')
+@section('title', 'Form Simpanan')
 
 @section('content')
 <form action="{{ route('saving.store') }}" method="POST">

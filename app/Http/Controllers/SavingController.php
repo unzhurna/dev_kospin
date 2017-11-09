@@ -42,37 +42,16 @@ class SavingController extends Controller
         return view('saving.deposit.list', ['saving'=>$saving]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function DepositStore(Request $request)
     {
-
+        $data = new Deposit;
+        $data->id_simpanan = $request->id_simpanan;
+        $data->sim_pokok = $request->sim_pokok;
+        $data->sim_wajib = $request->sim_wajib;
+        $data->sim_sukarela = $request->sim_sukarela;
+        $data->sim_total = $request->sim_total;
+        $data->save();
+        return response()->json($data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Member;
-use App\Saving;
+use App\Loan;
+use App\Installment;
 
 class LoanController extends Controller
 {
@@ -16,69 +17,56 @@ class LoanController extends Controller
 
     public function index()
     {
-        $savings = Saving::all();
-        return view('loan.list', ['savings'=>$savings]);
+        $loans = Loan::all();
+        return view('loan.list', ['loans'=>$loans]);
     }
 
     public function create()
     {
         $members = Member::all();
-        return view('loan.create', ['members'=>$members]);
+        return view('loan.add', ['members'=>$members]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'no_pinjaman'=> 'required',
+            'id_anggota'=> 'required',
+            'ttl_pinjaman'=> 'numeric',
+            'tenor'=> 'numeric',
+            'jenis_pinjaman'=> 'required'
+        ]);
+
+        $data = new Loan;
+        $data->no_pinjaman = $request->no_pinjaman;
+        $data->id_anggota = $request->id_anggota;
+        $data->jenis_pinjaman = $request->jenis_pinjaman;
+        $data->tenor = $request->tenor;
+        $data->ttl_pinjaman = $request->ttl_pinjaman;
+        $data->angs_pinjaman = $request->angs_pinjaman;
+        $data->bunga_pinjaman = $request->bunga_pinjaman;
+
+        $data->save();
+
+        return redirect()->route('loan.index');
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        $loan = Loan::find($id);
+        return view('loan.installment.list', ['loan'=>$loan]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function InstallmentStore(Request $request)
     {
-        //
+        $data = new Installment;
+        $data->id_pinjaman = $request->id_pinjaman;
+        $data->pembayaran = $request->pembayaran;
+        $data->pembayaran_ke = $request->pembayaran_ke;
+        $data->save();
+        return response()->json($data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

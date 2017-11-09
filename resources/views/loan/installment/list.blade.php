@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ asset('vendors/datatables/css/jquery.dataTables.min.css') }}">
 @endsection
 
-@section('title', 'Rincian Simpanan Anggota')
+@section('title', 'Rincian pinjaman Anggota')
 
 @section('content')
 <a data-toggle="modal" href="#formModal" class="btn btn-float btn-danger m-btn"><i class="zmdi zmdi-plus"></i></a>
@@ -12,16 +12,16 @@
     <div class="col-md-3">
         <div class="card profile-view">
             <div class="pv-header">
-                @if($saving->member->avatar)
-                    <img src="{{ asset('media/user/'.$$saving->member->avatar) }}" class="pv-main" alt="{{ $saving->member->nama }}" />
+                @if($loan->member->avatar)
+                    <img src="{{ asset('media/user/'.$$loan->member->avatar) }}" class="pv-main" alt="{{ $loan->member->nama }}" />
                 @else
-                    <img src="{{ asset('media/user/no-user-image.png') }}" class="pv-main" alt="{{ $saving->member->nama }}" />
+                    <img src="{{ asset('media/user/no-user-image.png') }}" class="pv-main" alt="{{ $loan->member->nama }}" />
                 @endif
             </div>
             <div class="pv-body">
-                <h2>{{ $saving->member->nama }}</h2>
-                <h4>{{ $saving->no_simpanan }}</h4>
-                <small>{{ $saving->member->alamat.', '.$saving->member->kota }}</small>
+                <h2>{{ $loan->member->nama }}</h2>
+                <h4>{{ $loan->no_pinjaman }}</h4>
+                <small>{{ $loan->member->alamat.', '.$loan->member->kota }}</small>
             </div>
         </div>
     </div>
@@ -30,30 +30,23 @@
             <table id="data-table" class="table table-striped">
                 <thead>
                     <tr>
-                        <th rowspan="2">Tanggal</th>
-                        <th colspan="3" class="text-center">Simpanan</th>
-                        <th rowspan="2">Total</th>
-                    </tr>
-                    <tr>
-                        <th>Pokok</th>
-                        <th>Wajib</th>
-                        <th>Sukarela</th>
+                        <th>Tanggal</th>
+                        <th>Anggsuran Ke</th>
+                        <th>Anggsuran</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th colspan="3" style="text-align:right">Total:</th>
-                        <th colspan="2" style="text-align:right"></th>
+                        <th colspan="2" style="text-align:right">Total:</th>
+                        <th style="text-align:right"></th>
                     </tr>
                 </tfoot>
                 <tbody>
-                    @foreach ($saving->deposit as $deposit)
+                    @foreach ($loan->installment as $installment)
                         <tr>
-                            <td>{{ $deposit->created_at->format('d/m/Y') }}</td>
-                            <td>{{ number_format($deposit->sim_pokok, 0, ',', '.') }}</td>
-                            <td>{{ number_format($deposit->sim_wajib, 0, ',', '.') }}</td>
-                            <td>{{ number_format($deposit->sim_sukarela, 0, ',', '.') }}</td>
-                            <td>{{ number_format($deposit->sim_total, 0, ',', '.') }}</td>
+                            <td>{{ $installment->created_at->format('d/m/Y') }}</td>
+                            <td><span class="badge">{{ $installment->pembayaran_ke }}</span></td>
+                            <td>{{ number_format($installment->pembayaran, 0, ',', '.') }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -66,27 +59,29 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Form Simpanan</h4>
+                <h4 class="modal-title">Form Pembayaran Angsuran</h4>
             </div>
             <div class="modal-body">
-                <form id="FormSetoran" action="{{ route('deposit') }}">
+                <form id="FormSetoran" action="{{ route('pay.loan') }}">
                     {{ csrf_field() }}
                     <div class="form-group fg-line">
-                        <label>Simpanan Pokok</label>
-                        <input type="text" class="hidden" name="id_simpanan" value="{{ $saving->id }}">
-                        <input type="text" class="form-control simpanan" name="sim_pokok" data-validation="number">
+                        <label>Tanggal</label>
+                        <input type="text" class="form-control" value="{{ date('d/m/Y') }}" disabled>
+                        <input type="text" class="hidden" name="id_pinjaman" value="{{ $loan->id }}">
                     </div>
                     <div class="form-group fg-line">
-                        <label>Simpanan Wajib</label>
-                        <input type="text" class="form-control simpanan" name="sim_wajib" data-validation="number">
+                        <label>Angsuran</label>
+                        <input type="text" class="form-control" value="{{ number_format($loan->angs_pinjaman, 0, ',', '.') }}" disabled>
+                        <input type="text" class="hidden" name="pembayaran" value="{{ $loan->angs_pinjaman}}">
                     </div>
                     <div class="form-group fg-line">
-                        <label>Simpanan Sukarela</label>
-                        <input type="text" class="form-control simpanan" name="sim_sukarela" data-validation="number">
+                        <label>Angsuran Ke</label>
+                        <p><label class="label label-info">{{ InstallmentSec($loan->id) }}</label></p>
+                        <input type="text" class="hidden" name="pembayaran_ke" value="{{ InstallmentSec($loan->id) }}">
                     </div>
                     <div class="form-group fg-line">
-                        <label>Simpanan Total</label>
-                        <input type="text" class="form-control" id="sim_total" name="sim_total" readonly>
+                        <label>Sisa Angsuran</label>
+                        <p><label class="label label-info">{{ $loan->tenor - InstallmentSec($loan->id) }}</label></p>
                     </div>
                 </form>
             </div>
@@ -121,7 +116,7 @@
 
                     // Total over all pages
                     total = api
-                        .column( 4 )
+                        .column( 2 )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
@@ -129,14 +124,14 @@
 
                     // Total over this page
                     pageTotal = api
-                        .column( 4, { page: 'current'} )
+                        .column( 2, { page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         }, 0 );
 
                     // Update footer
-                    $( api.column( 4 ).footer() ).html(
+                    $( api.column( 2 ).footer() ).html(
                         pageTotal +' ( '+ total +' total)'
                     );
                 }
@@ -163,10 +158,12 @@
                 dataType    : 'json',
                 success     : function(data) {
                     $('#formModal').modal('hide');
-                    swal("Berhasil!", "Setoran tabungan telah berhasil dilakukan.", "success");
+                    swal("Berhasil!", "Pembayaran tela berhasil dilakukan.", "success");
                     window.location.replace('{{ url()->current() }}');
                 }
             });
+
+
         });
 
     </script>

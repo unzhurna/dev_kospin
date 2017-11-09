@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Image;
 use App\Member;
+use App\User;
 
 class MemberController extends Controller
 {
@@ -117,5 +118,11 @@ class MemberController extends Controller
         $member->status = $request->status;
         $member->save();
         return response()->json($member);
+    }
+
+    public function profile($id)
+    {
+        $user = User::find($id);
+        return view('member.profile', ['user'=>$user]);
     }
 }

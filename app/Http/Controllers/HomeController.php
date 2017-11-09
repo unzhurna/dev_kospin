@@ -22,9 +22,14 @@ class HomeController extends Controller
         return view('home', ['members'=>$members]);
     }
 
-    public function UserProfile()
+    public function SystemSeting()
     {
-        return view('member.profile');
+        $members = Member::where('status', 1)
+                    ->orderBy('created_at', 'desc')
+                    ->take(5)
+                    ->get();
+
+        return view('setting', ['members'=>$members]);
     }
 
 }
