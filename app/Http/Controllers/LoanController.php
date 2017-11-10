@@ -39,13 +39,14 @@ class LoanController extends Controller
         ]);
 
         $data = new Loan;
-        $data->no_pinjaman = $request->no_pinjaman;
-        $data->id_anggota = $request->id_anggota;
-        $data->jenis_pinjaman = $request->jenis_pinjaman;
-        $data->tenor = $request->tenor;
-        $data->ttl_pinjaman = $request->ttl_pinjaman;
-        $data->angs_pinjaman = $request->angs_pinjaman;
-        $data->bunga_pinjaman = $request->bunga_pinjaman;
+        $data->no_pinjaman      = $request->no_pinjaman;
+        $data->id_anggota       = $request->id_anggota;
+        $data->ttl_pinjaman     = $request->ttl_pinjaman;
+        $data->jenis_pinjaman   = $request->jenis_pinjaman;
+        $data->bunga_pinjaman   = $request->bunga_pinjaman;
+        $data->tenor            = $request->tenor;
+        $data->jasa_pinjaman    = $request->jasa_pinjaman;
+        $data->angs_pinjaman    = $request->angs_pinjaman;
 
         $data->save();
 

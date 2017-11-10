@@ -25,9 +25,18 @@ class ReportController extends Controller
         return view('report.form_2');
     }
 
-    public function showResult()
+    public function showTotalShu(Request $request)
     {
-        return view('report.result');
+        $dateInput = explode('/',$request);
+        $ukDate = $dateInput[2].'-'.$dateInput[1].'-'.$dateInput[0];
+        return $ukDate;
+    }
+
+    public function showMemberShu(Request $request)
+    {
+        $dateInput = explode('/',$request);
+        $ukDate = $dateInput[2].'-'.$dateInput[1].'-'.$dateInput[0];
+        return $ukDate;
     }
 
 }

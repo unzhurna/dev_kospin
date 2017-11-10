@@ -14,8 +14,9 @@
             <tr>
                 <th>No Kontrak</th>
                 <th>Nama</th>
-                <th>Tgl. Pinjaman</th>
-                <th>Ttl. Pinjaman</th>
+                <th>Tanggal</th>
+                <th>Pinjaman</th>
+                <th>Jasa</th>
                 <th>Angsuran</th>
                 <th>Tenor</th>
                 <th>Status</th>
@@ -29,6 +30,7 @@
                     <td>{{ $loan->member->nama }}</td>
                     <td>{{ $loan->created_at->format('d/m/Y') }}</td>
                     <td>{{ number_format($loan->ttl_pinjaman, 0, ',', '.') }}</td>
+                    <td>{{ number_format($loan->jasa_pinjaman, 0, ',', '.') }}</td>
                     <td>{{ number_format($loan->angs_pinjaman, 0, ',', '.').' /bln' }}</td>
                     <td>{{ $loan->tenor.' bln' }}</td>
                     <td>

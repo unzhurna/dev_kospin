@@ -31,8 +31,8 @@
                 <thead>
                     <tr>
                         <th>Tanggal</th>
-                        <th>Anggsuran Ke</th>
                         <th>Anggsuran</th>
+                        <th>Ke</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -45,8 +45,8 @@
                     @foreach ($loan->installment as $installment)
                         <tr>
                             <td>{{ $installment->created_at->format('d/m/Y') }}</td>
-                            <td><span class="badge">{{ $installment->pembayaran_ke }}</span></td>
                             <td>{{ number_format($installment->pembayaran, 0, ',', '.') }}</td>
+                            <td><span class="badge">{{ $installment->pembayaran_ke }}</span></td>
                         </tr>
                     @endforeach
                 </tbody>

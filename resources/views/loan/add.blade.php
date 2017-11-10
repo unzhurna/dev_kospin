@@ -36,7 +36,8 @@
                     <div class="form-group fg-line">
                         <label>Jumlah Pinjaman</label>
                         <input type="text" class="form-control" id="loanTotal" name="ttl_pinjaman" data-validation="number">
-                        <input type="text" class="hidden" id="loanInstall" name="angs_pinjaman">
+                        <input type="text" class="hidden loanInstall" name="angs_pinjaman">
+                        <input type="text" class="hidden loanJasa" name="jasa_pinjaman">
                     </div>
 
                     <div class="row">
@@ -53,12 +54,12 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group fg-line">
-                                <select class="form-control" id="loanType" name="jenis_pinjaman" data-placeholder="Jenis Pinjaman">
+                                <select class="form-control" name="jenis_pinjaman" id="loanType" data-placeholder="Jenis Pinjaman">
                                     <option>Pilih Jenis Pinjaman</option>
-                                    <option value="Reguler" data-rate="1.4">Reguler</option>
-                                    <option value="Berjangaka" data-rate="3">Berjangaka</option>
+                                    <option value="0.014">Reguler</option>
+                                    <option value="0.03">Berjangaka</option>
                                 </select>
-                                <input type="text" class="hidden" id="loanTax2" name="bunga_pinjaman">
+                                <input type="text" class="hidden loanRate" name="bunga_pinjaman">
                             </div>
                         </div>
                     </div>
@@ -78,32 +79,32 @@
 
                 <div class="form-group fg-line">
                     <label>Jumlah Pijaman</label>
-                    <input type="text" class="form-control" id="loanTotal2" disabled>
+                    <input type="text" class="form-control loanTotal" disabled>
                 </div>
 
                 <div class="form-group fg-line">
                     <label>Tenor Pijaman</label>
-                    <input type="text" class="form-control" id="loanTenor2" disabled>
+                    <input type="text" class="form-control loanTenor" disabled>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group fg-line">
                             <label>Jenis Pijaman</label>
-                            <input type="text" class="form-control" id="loanType2" disabled>
+                            <input type="text" class="form-control loanType" disabled>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group fg-line">
                             <label>Bunga Pijaman</label>
-                            <input type="text" class="form-control" id="loanTax" disabled>
+                            <input type="text" class="form-control loanRate" disabled>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group fg-line">
                     <label>Angsuran per-bulan</label>
-                    <input type="text" class="form-control" id="loanPayment" disabled>
+                    <input type="text" class="form-control loanInstall" disabled>
                 </div>
 
             </div>
@@ -119,23 +120,30 @@
         $.validate();
 
         $(document).on('change', '#loanTotal', function() {
-            $('#loanTotal2').val($(this).val());
+            $('.loanTotal').val($(this).val());
         });
 
         $(document).on('change', '#loanTenor', function() {
-            $('#loanTenor2').val($(this).val());
+            $('.loanTenor').val($(this).val());
         });
 
         $(document).on('change', '#loanType', function() {
-            tTax = $(this).find(':selected').data('rate');
-            $('#loanType2').val($(this).val());
-            $('#loanTax').val(tTax+'%');
-            $('#loanTax2').val(tTax);
-            cicilanPokok = $('#loanTotal2').val() / $('#loanTenor2').val();
-            cicilanBunga = ($('#loanTotal2').val() * tTax / 100) / $('#loanTenor2').val();
-            cicilanBln = cicilanPokok + cicilanBunga;
-            $('#loanPayment').val(cicilanBln.toFixed(0));
-            $('#loanInstall').val(cicilanBln.toFixed(0));
+
+            //label
+            lTotal = $('.loanTotal').val();
+            lTenor = $('.loanTenor').val();
+            lType = $(this).find(':selected').text();
+            lRate = $(this).val();
+
+            $('.loanType').val(lType);
+            $('.loanRate').val(lRate);
+
+            cPokok = lTotal / lTenor;
+            cBunga = (lTotal * lRate) / lTenor;
+            cBulan = cPokok + cBunga;
+
+            $('.loanJasa').val(cBunga.toFixed(0));
+            $('.loanInstall').val(cBulan.toFixed(0));
         });
     </script>
 @endsection

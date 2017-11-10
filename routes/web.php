@@ -33,4 +33,5 @@ Route::post('pay-loan', 'LoanController@InstallmentStore')->name('pay.loan');
 
 Route::get('report-shu', 'ReportController@reportShu')->name('report.shu');
 Route::get('report-shu-member', 'ReportController@reportShuMember')->name('report.shu-member');
-Route::get('report/result', 'ReportController@showResult')->name('report.result');
+Route::post('total-shu', 'ReportController@showTotalShu')->name('total.shu');
+Route::post('member-shu', 'ReportController@showMemberShu')->name('member.shu');

@@ -11,13 +11,14 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body card-padding">
-                    <form action="#" method="POST">
+                    <form action="{{ route('total.shu') }}" method="POST">
+                        {{ csrf_field() }}
                         <div class="form-group lg-line">
                             <label>Cari Tanggal</label>
                             <div class="input-group form-group">
                                 <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
                                 <div class="dtp-container">
-                                    <input type='text' class="form-control date-picker" placeholder="Click here...">
+                                    <input type='text' class="form-control date-picker" name="date" placeholder="Click here...">
                                 </div>
                             </div>
                         </div>

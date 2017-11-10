@@ -14,7 +14,7 @@
             <tr>
                 <th>No Simpanan</th>
                 <th>Nama</th>
-                <th>Tgl. Pebukaan</th>
+                <th>Tanggal</th>
                 <th>Status</th>
             </tr>
         </thead>
